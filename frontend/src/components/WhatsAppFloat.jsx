@@ -16,7 +16,7 @@ export default function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Escribir por WhatsApp"
-      className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full flex items-center justify-center text-navy bg-gradient-to-br from-teal to-green shadow-cta hover:shadow-cta-hover hover:-translate-y-1 transition-all animate-pulse-wa ${
+      className={`fixed right-6 z-40 w-14 h-14 rounded-full flex items-center justify-center text-navy bg-gradient-to-br from-teal to-green shadow-cta hover:shadow-cta-hover hover:-translate-y-1 transition-all animate-pulse-wa bottom-[78px] lg:bottom-6 ${
         visible ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
       style={{ transition: 'opacity .3s, transform .2s' }}

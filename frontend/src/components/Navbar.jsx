@@ -14,12 +14,36 @@ const LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState('#inicio');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  useEffect(() => {
+    const sections = LINKS.map((l) => document.getElementById(l.href.slice(1))).filter(Boolean);
+    if (!sections.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(`#${e.target.id}`);
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    if (open) document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
 
   const close = () => setOpen(false);
 
@@ -40,9 +64,16 @@ export default function Navbar() {
           </span>
         </a>
 
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-7" aria-label="Principal">
           {LINKS.map((l) => (
-            <a key={l.href} href={l.href} className="text-gray-mid text-sm font-medium hover:text-white transition-colors">
+            <a
+              key={l.href}
+              href={l.href}
+              aria-current={active === l.href ? 'true' : undefined}
+              className={`text-sm font-medium transition-colors ${
+                active === l.href ? 'text-teal' : 'text-gray-mid hover:text-white'
+              }`}
+            >
               {l.label}
             </a>
           ))}
@@ -58,7 +89,9 @@ export default function Navbar() {
           <button
             className="lg:hidden w-10 h-10 rounded-[10px] bg-white/10 text-white text-lg flex items-center justify-center"
             onClick={() => setOpen(!open)}
-            aria-label="Abrir menú"
+            aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={open}
+            aria-controls="menu-movil"
           >
             {open ? '✕' : '☰'}
           </button>
@@ -66,13 +99,16 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="lg:hidden flex flex-col bg-navy-2 border-t border-white/10">
+        <div id="menu-movil" className="lg:hidden flex flex-col bg-navy-2 border-t border-white/10">
           {LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
               onClick={close}
-              className="px-6 py-3.5 text-gray-mid text-[15px] border-b border-white/5 hover:text-white"
+              aria-current={active === l.href ? 'true' : undefined}
+              className={`px-6 py-3.5 text-[15px] border-b border-white/5 ${
+                active === l.href ? 'text-teal' : 'text-gray-mid hover:text-white'
+              }`}
             >
               {l.label}
             </a>

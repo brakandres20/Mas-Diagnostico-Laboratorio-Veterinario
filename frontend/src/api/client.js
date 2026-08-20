@@ -8,7 +8,8 @@ const client = axios.create({
 
 /**
  * Registra una solicitud (convenio, cotización, recolección o contacto).
- * Se guarda en MongoDB y se genera el enlace de WhatsApp con el detalle.
+ * El backend genera el enlace de WhatsApp con el detalle y, si la WhatsApp
+ * Cloud API está configurada, envía el mensaje al laboratorio automáticamente.
  */
 export async function createQuote(payload) {
   const { data } = await client.post('/quotes', payload);

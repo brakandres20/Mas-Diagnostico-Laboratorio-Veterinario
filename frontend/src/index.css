@@ -22,6 +22,29 @@ body {
   overflow-x: hidden;
 }
 
+/* Anclas debajo del header fijo */
+[id] {
+  scroll-margin-top: 96px;
+}
+
+/* Enlace para saltar al contenido (accesibilidad) */
+.skip-link {
+  position: fixed;
+  top: -80px;
+  left: 16px;
+  z-index: 10000;
+  background: var(--navy);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
 ::selection {
   background: rgba(34, 211, 184, 0.3);
 }
@@ -214,5 +237,12 @@ body {
   * {
     animation: none !important;
     transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

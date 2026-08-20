@@ -42,7 +42,7 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/10 py-5">
+      <div className="border-t border-white/10 py-5 pb-[76px] lg:pb-5">
         <div className="max-w-[1180px] mx-auto px-6 flex flex-wrap justify-between gap-3 text-[12.5px] text-gray-mid">
           <span>© {year} {SITE.name}. Todos los derechos reservados.</span>
           <span className="font-mono">Medellín · Colombia</span>

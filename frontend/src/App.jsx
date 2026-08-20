@@ -1,3 +1,4 @@
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ValueProps from './components/ValueProps';
@@ -11,12 +12,17 @@ import Trust from './components/Trust';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import WhatsAppFloat from './components/WhatsAppFloat';
+import MobileCTA from './components/MobileCTA';
+import BackToTop from './components/BackToTop';
 
 export default function App() {
   return (
-    <>
+    <ErrorBoundary>
+      <a href="#contenido" className="skip-link">
+        Saltar al contenido
+      </a>
       <Navbar />
-      <main>
+      <main id="contenido">
         <Hero />
         <ValueProps />
         <Portfolio />
@@ -42,6 +48,8 @@ export default function App() {
       </main>
       <Footer />
       <WhatsAppFloat />
-    </>
+      <MobileCTA />
+      <BackToTop />
+    </ErrorBoundary>
   );
 }

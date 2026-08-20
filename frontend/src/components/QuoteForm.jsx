@@ -16,13 +16,30 @@ const emptyForm = {
   tipo: 'cotizacion',
 };
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validate(form) {
+  const errors = {};
+  if (!form.nombreCompleto.trim()) errors.nombreCompleto = 'Ingresa tu nombre.';
+  if (!form.telefono.trim()) errors.telefono = 'Ingresa tu teléfono.';
+  else if (form.telefono.replace(/\D/g, '').length < 7) errors.telefono = 'Ingresa un teléfono válido.';
+  if (form.email && !EMAIL_RE.test(form.email)) errors.email = 'Ingresa un correo válido.';
+  if (!form.ciudad.trim()) errors.ciudad = 'Ingresa la ciudad.';
+  return errors;
+}
+
 export default function QuoteForm() {
   const [form, setForm] = useState(emptyForm);
+  const [errors, setErrors] = useState({});
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
   const [errorMsg, setErrorMsg] = useState('');
   const [waUrl, setWaUrl] = useState('');
+  const [waEnviado, setWaEnviado] = useState(false);
 
-  const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
+  const set = (key, value) => {
+    setForm((f) => ({ ...f, [key]: value }));
+    setErrors((e) => (e[key] ? { ...e, [key]: undefined } : e));
+  };
 
   const toggleService = (s) =>
     setForm((f) => {
@@ -35,10 +52,20 @@ export default function QuoteForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const errs = validate(form);
+    if (Object.values(errs).some(Boolean)) {
+      setErrors(errs);
+      const first = Object.keys(errs)[0];
+      const el = document.getElementById(`campo-${first}`);
+      if (el) el.focus();
+      return;
+    }
+
     setStatus('sending');
     setErrorMsg('');
     try {
       const data = await createQuote(form);
+      setWaEnviado(Boolean(data?.waEnviado));
       if (data?.waLink) {
         setWaUrl(data.waLink);
         window.open(data.waLink, '_blank', 'noopener,noreferrer');
@@ -48,13 +75,21 @@ export default function QuoteForm() {
       setStatus('error');
       setErrorMsg(
         err?.response?.data?.message ||
+          err?.response?.data?.errors?.[0] ||
           'No pudimos preparar tu solicitud. Intenta de nuevo o escríbenos directamente por WhatsApp.'
       );
     }
   };
 
-  const inputCls =
-    'w-full rounded-xl border border-[#E7ECF1] bg-white px-4 py-3 text-sm text-navy placeholder:text-ink-muted focus:outline-none focus:border-teal focus:ring-2 focus:ring-teal/30 transition';
+  const inputCls = (hasErr) =>
+    `w-full rounded-xl border bg-white px-4 py-3 text-sm text-navy placeholder:text-ink-muted focus:outline-none focus:ring-2 transition ${
+      hasErr
+        ? 'border-red-400 focus:border-red-400 focus:ring-red-200'
+        : 'border-[#E7ECF1] focus:border-teal focus:ring-teal/30'
+    }`;
+
+  const fieldErr = (key) =>
+    errors[key] ? <span className="mt-1 block text-[12px] text-red-600">{errors[key]}</span> : null;
 
   return (
     <Reveal>
@@ -71,10 +106,11 @@ export default function QuoteForm() {
             <div className="w-16 h-16 rounded-full bg-green/15 text-green flex items-center justify-center text-3xl mx-auto mb-4">
               ✓
             </div>
-            <h4 className="text-navy text-lg font-bold">Solicitud enviada</h4>
+            <h4 className="text-navy text-lg font-bold">Solicitud lista</h4>
             <p className="text-ink-muted text-sm mt-2 mb-6 max-w-md mx-auto">
-              Abrimos WhatsApp con el resumen de tu solicitud. Envíalo y te responderemos lo antes
-              posible.
+              {waEnviado
+                ? 'Confirmamos que tu solicitud fue enviada al laboratorio. Te responderemos lo antes posible.'
+                : 'Abrimos WhatsApp con el resumen de tu solicitud. Envíalo y te responderemos lo antes posible.'}
             </p>
             {waUrl && (
               <a
@@ -89,6 +125,7 @@ export default function QuoteForm() {
             <button
               onClick={() => {
                 setForm(emptyForm);
+                setErrors({});
                 setStatus('idle');
                 setWaUrl('');
               }}
@@ -98,34 +135,41 @@ export default function QuoteForm() {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="p-8 grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-[13px] font-semibold mb-1.5 text-navy">Nombre completo *</label>
-              <input required className={inputCls} placeholder="Tu nombre" value={form.nombreCompleto} onChange={(e) => set('nombreCompleto', e.target.value)} />
+          <form onSubmit={handleSubmit} noValidate className="p-8 grid md:grid-cols-2 gap-4">
+            <div className="hidden" aria-hidden="true">
+              <input type="text" name="empresa" tabIndex={-1} autoComplete="off" value={form.empresa || ''} onChange={(e) => set('empresa', e.target.value)} />
             </div>
             <div>
-              <label className="block text-[13px] font-semibold mb-1.5 text-navy">Clínica / institución</label>
-              <input className={inputCls} placeholder="Nombre de tu clínica" value={form.clinica} onChange={(e) => set('clinica', e.target.value)} />
+              <label htmlFor="campo-nombreCompleto" className="block text-[13px] font-semibold mb-1.5 text-navy">Nombre completo *</label>
+              <input id="campo-nombreCompleto" required maxLength={120} className={inputCls(errors.nombreCompleto)} placeholder="Tu nombre" value={form.nombreCompleto} onChange={(e) => set('nombreCompleto', e.target.value)} />
+              {fieldErr('nombreCompleto')}
             </div>
             <div>
-              <label className="block text-[13px] font-semibold mb-1.5 text-navy">Cargo</label>
-              <input className={inputCls} placeholder="Ej. Médico veterinario" value={form.cargo} onChange={(e) => set('cargo', e.target.value)} />
+              <label htmlFor="campo-clinica" className="block text-[13px] font-semibold mb-1.5 text-navy">Clínica / institución</label>
+              <input id="campo-clinica" maxLength={120} className={inputCls(errors.clinica)} placeholder="Nombre de tu clínica" value={form.clinica} onChange={(e) => set('clinica', e.target.value)} />
             </div>
             <div>
-              <label className="block text-[13px] font-semibold mb-1.5 text-navy">Teléfono / WhatsApp *</label>
-              <input required type="tel" className={inputCls} placeholder="Ej. 310 000 0000" value={form.telefono} onChange={(e) => set('telefono', e.target.value)} />
+              <label htmlFor="campo-cargo" className="block text-[13px] font-semibold mb-1.5 text-navy">Cargo</label>
+              <input id="campo-cargo" maxLength={80} className={inputCls(errors.cargo)} placeholder="Ej. Médico veterinario" value={form.cargo} onChange={(e) => set('cargo', e.target.value)} />
             </div>
             <div>
-              <label className="block text-[13px] font-semibold mb-1.5 text-navy">Correo</label>
-              <input type="email" className={inputCls} placeholder="tucorreo@clinica.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+              <label htmlFor="campo-telefono" className="block text-[13px] font-semibold mb-1.5 text-navy">Teléfono / WhatsApp *</label>
+              <input id="campo-telefono" required type="tel" inputMode="tel" maxLength={30} className={inputCls(errors.telefono)} placeholder="Ej. 310 000 0000" value={form.telefono} onChange={(e) => set('telefono', e.target.value)} />
+              {fieldErr('telefono')}
             </div>
             <div>
-              <label className="block text-[13px] font-semibold mb-1.5 text-navy">Ciudad *</label>
-              <input required className={inputCls} placeholder="Medellín" value={form.ciudad} onChange={(e) => set('ciudad', e.target.value)} />
+              <label htmlFor="campo-email" className="block text-[13px] font-semibold mb-1.5 text-navy">Correo</label>
+              <input id="campo-email" type="email" maxLength={120} className={inputCls(errors.email)} placeholder="tucorreo@clinica.com" value={form.email} onChange={(e) => set('email', e.target.value)} />
+              {fieldErr('email')}
             </div>
             <div>
-              <label className="block text-[13px] font-semibold mb-1.5 text-navy">Tipo de institución</label>
-              <select className={inputCls} value={form.tipoInstitucion} onChange={(e) => set('tipoInstitucion', e.target.value)}>
+              <label htmlFor="campo-ciudad" className="block text-[13px] font-semibold mb-1.5 text-navy">Ciudad *</label>
+              <input id="campo-ciudad" required maxLength={80} className={inputCls(errors.ciudad)} placeholder="Medellín" value={form.ciudad} onChange={(e) => set('ciudad', e.target.value)} />
+              {fieldErr('ciudad')}
+            </div>
+            <div>
+              <label htmlFor="campo-tipoInstitucion" className="block text-[13px] font-semibold mb-1.5 text-navy">Tipo de institución</label>
+              <select id="campo-tipoInstitucion" className={inputCls(false)} value={form.tipoInstitucion} onChange={(e) => set('tipoInstitucion', e.target.value)}>
                 <option value="">Selecciona…</option>
                 {INSTITUTION_TYPES.map((t) => (
                   <option key={t} value={t}>{t}</option>
@@ -133,8 +177,8 @@ export default function QuoteForm() {
               </select>
             </div>
             <div>
-              <label className="block text-[13px] font-semibold mb-1.5 text-navy">Motivo de la solicitud</label>
-              <select className={inputCls} value={form.tipo} onChange={(e) => set('tipo', e.target.value)}>
+              <label htmlFor="campo-tipo" className="block text-[13px] font-semibold mb-1.5 text-navy">Motivo de la solicitud</label>
+              <select id="campo-tipo" className={inputCls(false)} value={form.tipo} onChange={(e) => set('tipo', e.target.value)}>
                 <option value="cotizacion">Cotización</option>
                 <option value="convenio">Convenio</option>
                 <option value="recoleccion">Recolección de muestras</option>
@@ -166,10 +210,12 @@ export default function QuoteForm() {
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-[13px] font-semibold mb-1.5 text-navy">Mensaje</label>
+              <label htmlFor="campo-mensaje" className="block text-[13px] font-semibold mb-1.5 text-navy">Mensaje</label>
               <textarea
+                id="campo-mensaje"
                 rows="4"
-                className={inputCls}
+                maxLength={1000}
+                className={inputCls(false)}
                 placeholder="Cuéntanos qué pruebas o servicios necesitas…"
                 value={form.mensaje}
                 onChange={(e) => set('mensaje', e.target.value)}
@@ -177,7 +223,7 @@ export default function QuoteForm() {
             </div>
 
             {status === 'error' && (
-              <div className="md:col-span-2 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">
+              <div role="alert" className="md:col-span-2 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">
                 {errorMsg}
               </div>
             )}
