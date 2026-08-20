@@ -35,7 +35,10 @@ export default function Technology() {
                   <img
                     src={eq.image}
                     alt={eq.title}
+                    width="56"
+                    height="56"
                     loading="lazy"
+                    decoding="async"
                     className="w-14 h-14 rounded-xl object-cover bg-white/5 border border-white/10"
                   />
                 </div>

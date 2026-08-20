@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-[1180px] mx-auto px-6 py-14 grid md:grid-cols-3 gap-10">
         <div>
           <div className="flex items-center gap-2.5">
-            <img src="/logo-256.png" alt="Más Diagnóstico Laboratorio Veterinario" className="w-9 h-9 rounded-lg object-contain" />
+            <img src="/logo-256.png" alt="Más Diagnóstico Laboratorio Veterinario" width="36" height="36" decoding="async" className="w-9 h-9 rounded-lg object-contain" />
             <span className="text-white font-extrabold text-[15px]">
               Más Diagnóstico
               <small className="block font-mono text-[9px] tracking-[0.1em] text-teal uppercase">Laboratorio Veterinario</small>

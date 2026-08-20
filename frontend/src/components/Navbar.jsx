@@ -57,7 +57,7 @@ export default function Navbar() {
     >
       <div className="max-w-[1180px] mx-auto px-6 h-[74px] flex items-center justify-between">
         <a href="#inicio" className="flex items-center gap-2.5" onClick={close}>
-          <img src="/logo-256.png" alt="Más Diagnóstico Laboratorio Veterinario" className="w-10 h-10 rounded-lg object-contain" loading="eager" />
+          <img src="/logo-256.png" alt="Más Diagnóstico Laboratorio Veterinario" width="40" height="40" className="w-10 h-10 rounded-lg object-contain" loading="eager" fetchpriority="high" />
           <span className="text-white font-extrabold text-[15px] leading-tight">
             Más Diagnóstico
             <small className="block font-mono text-[9px] tracking-[0.1em] text-teal uppercase">Laboratorio Veterinario</small>
