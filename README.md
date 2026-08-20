@@ -1,18 +1,15 @@
 # Más Diagnóstico Laboratorio Veterinario
 
-Sitio web B2B del laboratorio veterinario **Más Diagnóstico** (Medellín) construido con React + Vite + Tailwind en el frontend y Node.js + Express + MongoDB en el backend.
-
-El formulario de cotizaciones **guarda cada solicitud en MongoDB** y abre **WhatsApp** con el resumen para enviarlo al laboratorio (314 620 3073).
+Sitio web B2B del laboratorio veterinario **Más Diagnóstico** (Medellín) construido con **React + Vite + Tailwind** en el frontend y **Node.js + Express** en el backend. Sin base de datos: cada solicitud del formulario genera un **mensaje de WhatsApp** listo para enviar al laboratorio (314 620 3073).
 
 ## Estructura
 
 ```
 mas-diagnostico/
-├─ backend/            # API (Express + Mongoose)
+├─ backend/            # API (Express)
 │  ├─ src/
 │  │  ├─ index.js      # Servidor (puerto 5000)
-│  │  ├─ config/db.js  # Conexión a MongoDB
-│  │  ├─ models/Quote.js
+│  │  ├─ app.js        # App Express
 │  │  ├─ controllers/quotes.controller.js
 │  │  ├─ routes/quotes.routes.js
 │  │  └─ services/whatsapp.service.js
@@ -26,17 +23,8 @@ mas-diagnostico/
 ## Requisitos
 
 - Node.js 18 o superior
-- Una base de datos MongoDB (local o **MongoDB Atlas gratis**)
 
-## 1. Configurar MongoDB Atlas (gratis)
-
-1. Crea una cuenta en https://www.mongodb.com/cloud/atlas y crea un **clúster gratuito (M0)**.
-2. En **Database Access**, crea un usuario con contraseña.
-3. En **Network Access**, permite acceso desde tu IP (o `0.0.0.0/0` para pruebas).
-4. En el clúster, pulsa **Connect → Drivers** y copia el URI `mongodb+srv://...`.
-5. Abre `backend/.env` y pega el URI en `MONGODB_URI`, reemplazando `<usuario>` y `<contrasena>`.
-
-## 2. Poner en marcha
+## Poner en marcha
 
 ### Backend
 
@@ -54,24 +42,11 @@ npm install
 npm run dev      # http://localhost:3000  (el proxy envía /api al backend)
 ```
 
-Abre http://localhost:3000 y prueba el formulario de cotización. Al enviarlo se guarda en MongoDB y se abre WhatsApp con el mensaje listo.
+Abre http://localhost:3000 y prueba el formulario de cotización: al enviarlo se abre WhatsApp con el mensaje listo para el laboratorio.
 
-## 3. Consultar las cotizaciones registradas
+## WhatsApp automático (opcional)
 
-El backend guarda cada solicitud con su estado (`nueva`, `contactado`, `respondida`, `cerrada`).
-
-```bash
-# Listar (requiere la clave definida en .env como ADMIN_KEY)
-curl -H "X-Admin-Key: tu-clave" http://localhost:5000/api/quotes
-
-# Cambiar estado
-curl -X PATCH -H "X-Admin-Key: tu-clave" -H "Content-Type: application/json" \
-  -d '{"estado":"contactado"}' http://localhost:5000/api/quotes/<id>
-```
-
-## 4. WhatsApp automático (opcional)
-
-Por defecto, al enviar el formulario se guarda la cotización en MongoDB y el navegador abre un enlace `wa.me` hacia el número del laboratorio.
+Por defecto, el backend devuelve un enlace `wa.me` con el resumen de la solicitud y el navegador lo abre para que el cliente envíe el mensaje al laboratorio.
 
 Para **enviar automáticamente** el mensaje al laboratorio sin pasar por el cliente, configura la **WhatsApp Cloud API** de Meta en `backend/.env`:
 
@@ -82,28 +57,24 @@ WHATSAPP_PHONE_ID=<id_del_número>
 
 > Para usar la Cloud API necesitas una cuenta de negocio en Meta, un número verificado y un token de acceso. Es un paso opcional: sin él, el sitio sigue funcionando con el enlace `wa.me`.
 
-## 5. Despliegue en Vercel
+## Despliegue en Vercel
 
 El proyecto está preparado para Vercel en **dos proyectos separados** (backend y frontend).
 
 ### Backend (API) → Vercel
 
-1. En Vercel, crea un proyecto y apunta al repositorio/carpeta `mas-diagnostico/backend`.
+1. En Vercel, crea un proyecto y apunta a la carpeta `mas-diagnostico/backend`.
 2. **Root Directory**: `backend`.
 3. Vercel detecta automáticamente la función serverless en `backend/api/index.js` (exporta la app de Express). Sin `npm run build`.
-4. En **Settings → Environment Variables** agrega las mismas del `.env`:
-   - `MONGODB_URI` → tu URI de Atlas (ej. `mongodb+srv://…/cotizaciones?retryWrites=true&w=majority&appName=Cluster0`)
+4. En **Settings → Environment Variables** agrega:
    - `WHATSAPP_NUMBER` → `573146203073`
-   - `ADMIN_KEY` → clave para consultar las cotizaciones
    - `WHATSAPP_ACCESS_TOKEN` y `WHATSAPP_PHONE_ID` → opcionales (envío automático)
 5. Despliega. Obtendrás una URL tipo `https://mas-diagnostico-api.vercel.app`.
 6. Verifica: `https://TU-API.vercel.app/api/health` debe responder `{"ok":true,...}`.
 
-> Nota: como es serverless, la conexión a MongoDB se reutiliza entre invocaciones (ver `backend/api/index.js`). Si tu plan gratuito de Atlas no permite IPs dinámicas, usa Network Access `0.0.0.0/0`.
-
 ### Frontend (Sitio) → Vercel
 
-1. Crea un segundo proyecto apuntando a `mas-diagnostico/frontend`.
+1. Crea un segundo proyecto apuntando a la carpeta `mas-diagnostico/frontend`.
 2. **Root Directory**: `frontend` · **Framework Preset**: Vite · **Output Directory**: `dist`.
 3. Para que el formulario llegue al backend, usa una de estas dos opciones (recomendada la primera):
    - **Opción A (recomendada):** Define en las variables de entorno del frontend:
@@ -119,7 +90,7 @@ Con la **Opción A** el navegador llama directo al backend (CORS abierto en el A
 
 Si no defines `VITE_API_URL`, el frontend usa `/api` y el proxy de Vite lo envía a `http://localhost:5000`.
 
-## 6. Despliegue tradicional (opcional)
+## Despliegue tradicional (opcional)
 
 ```bash
 cd frontend && npm run build      # genera frontend/dist

@@ -48,7 +48,7 @@ export default function QuoteForm() {
       setStatus('error');
       setErrorMsg(
         err?.response?.data?.message ||
-          'No pudimos guardar tu solicitud. Intenta de nuevo o escríbenos directamente por WhatsApp.'
+          'No pudimos preparar tu solicitud. Intenta de nuevo o escríbenos directamente por WhatsApp.'
       );
     }
   };
@@ -73,8 +73,8 @@ export default function QuoteForm() {
             </div>
             <h4 className="text-navy text-lg font-bold">Solicitud enviada</h4>
             <p className="text-ink-muted text-sm mt-2 mb-6 max-w-md mx-auto">
-              Tu solicitud quedó registrada con nosotros. Abrimos WhatsApp con el resumen para que la
-              confirmes en un mensaje.
+              Abrimos WhatsApp con el resumen de tu solicitud. Envíalo y te responderemos lo antes
+              posible.
             </p>
             {waUrl && (
               <a

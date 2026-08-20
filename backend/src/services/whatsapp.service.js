@@ -12,7 +12,7 @@ function buildQuoteMessage(q) {
   if (q.clinica) lines.push(`*Clínica:* ${q.clinica}`);
   if (q.cargo) lines.push(`*Cargo:* ${q.cargo}`);
   lines.push(`*Teléfono/WhatsApp:* ${q.telefono}`);
-  lines.push(`*Correo:* ${q.email}`);
+  if (q.email) lines.push(`*Correo:* ${q.email}`);
   if (q.ciudad) lines.push(`*Ciudad:* ${q.ciudad}`);
   if (q.tipoInstitucion) lines.push(`*Tipo de institución:* ${q.tipoInstitucion}`);
   if (q.serviciosInteres && q.serviciosInteres.length)
