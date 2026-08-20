@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://masdiagnosticolab.com/sitemap.xml
