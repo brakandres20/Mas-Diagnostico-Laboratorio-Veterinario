@@ -103,4 +103,4 @@ cd ../backend && npm start        # NODE_ENV=production sirve el build
 - Teléfono / WhatsApp: 314 620 3073 (+573146203073)
 - Correo: masdiagnosticolab@gmail.com
 - Horario: Lunes a sábado, 9:00 a.m. – 5:30 p.m.
-- Recolección de muestras: 2 jornadas diarias, Medellín y área metropolitana
+- Recolección de muestras: 2 jornadas diarias, Medellín y área metropolitana# Mas-Diagnostico-Laboratorio-Veterinario
