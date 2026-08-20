@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { EQUIPMENT } from '../data/services';
 
 const items = EQUIPMENT.map((e) => ({ tag: e.tag, title: e.title, img: e.image }));
+const count = items.length;
 
 function sizingFor(w) {
   if (w < 560) return { activeWidth: w * 0.72, activeHeight: 260, restWidth: 64, restHeight: 170, gap: 12 };
@@ -11,173 +12,141 @@ function sizingFor(w) {
 
 export default function EquipmentCarousel() {
   const wrapRef = useRef(null);
-  const trackRef = useRef(null);
-  const cardsRef = useRef([]);
-  const [sizing, setSizing] = useState(null);
+  const [index, setIndex] = useState(0);
+  const [size, setSize] = useState(() => sizingFor(800));
 
-  const count = items.length;
   const R = Math.max(1, Math.min(6, Math.floor(count / 2) - 1)) || Math.floor(count / 2);
 
-  const stateRef = useRef({ pos: 0, target: 0, raf: null, lastT: null, dwellAcc: 0, hovered: false, autoplaying: true, dir: 1 });
-
-  function relOf(index, pos) {
-    let rel = (((index - pos) % count) + count) % count;
-    if (rel > count / 2) rel -= count;
-    return rel;
-  }
-  function xForRel(rel, s, gap) {
-    const ar = Math.abs(rel);
-    const c1 = s.activeWidth / 2 + gap + s.restWidth / 2;
-    const pitch = s.restWidth + gap;
-    const mag = ar <= 1 ? ar * c1 : c1 + (ar - 1) * pitch;
-    return (rel < 0 ? -1 : 1) * mag;
-  }
-  function blendForRel(rel) {
-    return Math.min(Math.abs(rel), 1);
-  }
-
-  function render(s) {
-    cardsRef.current.forEach((card, i) => {
-      if (!card) return;
-      const rel = relOf(i, stateRef.current.pos);
-      const ar = Math.abs(rel);
-      const x = xForRel(rel, s, s.gap);
-      const a = blendForRel(rel);
-      const width = s.activeWidth + (s.restWidth - s.activeWidth) * a;
-      const height = s.activeHeight + (s.restHeight - s.activeHeight) * a;
-      const radius = 16 * (1 - a) + 12 * a;
-      const opacity = ar <= R ? 1 : ar >= R + 1 ? 0 : 1 - (ar - R);
-      const z = Math.round(1000 - ar * 100);
-      const inner = card.querySelector('.cf-card-inner');
-      card.style.transform = `translateX(${x}px)`;
-      card.style.zIndex = z;
-      card.style.opacity = opacity;
-      inner.style.width = `${width}px`;
-      inner.style.height = `${height}px`;
-      inner.style.borderRadius = `${radius}px`;
-      inner.style.boxShadow = ar < 0.5 ? '0 24px 60px rgba(10,25,47,0.4)' : '0 12px 30px rgba(10,25,47,0.28)';
-      card.classList.toggle('is-rest', a > 0.5);
-    });
-  }
-
-  function ensureRunning(s) {
-    const st = stateRef.current;
-    if (st.raf == null) {
-      st.lastT = null;
-      st.raf = requestAnimationFrame(tick);
-    }
-  }
-  function tick(t) {
-    const st = stateRef.current;
-    const last = st.lastT ?? t;
-    const dt = Math.min((t - last) / 1000, 1 / 30);
-    st.lastT = t;
-    const diff = st.target - st.pos;
-    const step = (1 / 0.5) * dt;
-    const arriving = Math.abs(diff) <= step;
-    if (arriving) {
-      st.pos = st.target;
-      render(sizing);
-      if (st.autoplaying && !st.hovered) {
-        st.dwellAcc += dt;
-        if (st.dwellAcc >= 3.2) {
-          st.dwellAcc = 0;
-          st.target += st.dir;
-        }
-        st.raf = requestAnimationFrame(tick);
-        return;
-      }
-      st.raf = null;
-      st.lastT = null;
-      return;
-    }
-    st.pos += Math.sign(diff) * step;
-    render(sizing);
-    st.raf = requestAnimationFrame(tick);
-  }
-  const goNext = () => {
-    stateRef.current.target += 1;
-    ensureRunning(sizing);
-  };
-  const goPrev = () => {
-    stateRef.current.target -= 1;
-    ensureRunning(sizing);
-  };
-  const goTo = (index) => {
-    const st = stateRef.current;
-    let d = index - st.target;
-    d = ((d % count) + count) % count;
-    if (d > count / 2) d -= count;
-    st.target += d;
-    ensureRunning(sizing);
-  };
-
   useEffect(() => {
-    setSizing(sizingFor(wrapRef.current.clientWidth));
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const update = () => setSize(sizingFor(wrap.clientWidth || 800));
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(wrap);
+    return () => ro.disconnect();
   }, []);
 
+  const pausedRef = useRef(false);
   useEffect(() => {
-    if (!sizing) return;
-    const wrap = wrapRef.current;
-    const st = stateRef.current;
+    const id = setInterval(() => {
+      if (!pausedRef.current) setIndex((i) => (i + 1) % count);
+    }, 3500);
+    return () => clearInterval(id);
+  }, []);
 
-    const onResize = () => setSizing(sizingFor(wrap.clientWidth));
-    window.addEventListener('resize', onResize);
-    wrap.addEventListener('mouseenter', () => (st.hovered = true));
-    wrap.addEventListener('mouseleave', () => {
-      st.hovered = false;
-      ensureRunning(sizing);
-    });
-    const onKey = (e) => {
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        goPrev();
+  const go = useCallback((d) => setIndex((i) => (i + d + count) % count), []);
+  const goTo = useCallback((i) => setIndex(i), []);
+
+  const swipeRef = useRef(null);
+  const swipedRef = useRef(false);
+  const onPointerDown = (e) => {
+    pausedRef.current = true;
+    swipeRef.current = { x: e.clientX, y: e.clientY };
+  };
+  const onPointerUp = (e) => {
+    const s = swipeRef.current;
+    swipeRef.current = null;
+    if (s) {
+      const dx = e.clientX - s.x;
+      const dy = e.clientY - s.y;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+        swipedRef.current = true;
+        go(dx < 0 ? 1 : -1);
       }
-      if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        goNext();
-      }
-    };
-    wrap.addEventListener('keydown', onKey);
+    }
+    setTimeout(() => {
+      swipedRef.current = false;
+      pausedRef.current = false;
+    }, 5000);
+  };
+  const onPointerCancel = () => {
+    swipeRef.current = null;
+    setTimeout(() => {
+      swipedRef.current = false;
+      pausedRef.current = false;
+    }, 5000);
+  };
 
-    render(sizing);
-    ensureRunning(sizing);
+  const relOf = (i) => {
+    let rel = ((i - index) % count + count) % count;
+    if (rel > count / 2) rel -= count;
+    return rel;
+  };
 
-    return () => {
-      window.removeEventListener('resize', onResize);
-      wrap.removeEventListener('mouseenter', () => (st.hovered = true));
-      wrap.removeEventListener('mouseleave', () => (st.hovered = false));
-      wrap.removeEventListener('keydown', onKey);
-      if (st.raf) cancelAnimationFrame(st.raf);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sizing]);
+  const c1 = size.activeWidth / 2 + size.gap + size.restWidth / 2;
+  const pitch = size.restWidth + size.gap;
 
   return (
-    <div className="coverflow-wrap" id="coverflow" ref={wrapRef} tabIndex="0" aria-label="Galería de equipos">
-      <div className="coverflow-track" ref={trackRef}>
-        {items.map((item, i) => (
-          <div
-            key={item.title}
-            className="cf-card"
-            ref={(el) => (cardsRef.current[i] = el)}
-            onClick={() => goTo(i)}
-          >
-            <div className="cf-card-inner">
+    <div
+      className="coverflow-wrap"
+      id="coverflow"
+      ref={wrapRef}
+      tabIndex="0"
+      aria-label="Galería de equipos"
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerCancel}
+      onPointerLeave={onPointerCancel}
+      onMouseEnter={() => (pausedRef.current = true)}
+      onMouseLeave={() => {
+        swipeRef.current = null;
+        pausedRef.current = false;
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          go(-1);
+        }
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          go(1);
+        }
+      }}
+    >
+      <div className="coverflow-track">
+        {items.map((item, i) => {
+          const rel = relOf(i);
+          const ar = Math.abs(rel);
+          const mag = ar <= 1 ? ar * c1 : c1 + (ar - 1) * pitch;
+          const x = (rel < 0 ? -1 : 1) * mag;
+          const a = Math.min(ar, 1);
+          const width = size.activeWidth + (size.restWidth - size.activeWidth) * a;
+          const height = size.activeHeight + (size.restHeight - size.activeHeight) * a;
+          const radius = 16 * (1 - a) + 12 * a;
+          const opacity = ar <= R ? 1 : ar >= R + 1 ? 0 : 1 - (ar - R);
+          const z = Math.round(1000 - ar * 100);
+          return (
+            <div
+              key={item.title}
+              className={`cf-card${a > 0.5 ? ' is-rest' : ''}`}
+              style={{ transform: `translateX(${x}px)`, zIndex: z, opacity }}
+              onClick={() => {
+                if (!swipedRef.current && i !== index) goTo(i);
+              }}
+            >
               <div
-                className="cf-img"
-                style={{ backgroundImage: `url(${item.img})` }}
-              />
-              <div className="cf-caption">
-                <p className="cf-tag">{item.tag}</p>
-                <h4>{item.title}</h4>
+                className="cf-card-inner"
+                style={{
+                  width,
+                  height,
+                  borderRadius: radius,
+                  boxShadow:
+                    ar < 0.5 ? '0 24px 60px rgba(10,25,47,0.4)' : '0 12px 30px rgba(10,25,47,0.28)',
+                }}
+              >
+                <div className="cf-img" style={{ backgroundImage: `url(${item.img})` }} />
+                <div className="cf-caption">
+                  <p className="cf-tag">{item.tag}</p>
+                  <h4>{item.title}</h4>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-      <button className="cf-arrow cf-left" onClick={(e) => { e.stopPropagation(); goPrev(); }} aria-label="Anterior">‹</button>
-      <button className="cf-arrow cf-right" onClick={(e) => { e.stopPropagation(); goNext(); }} aria-label="Siguiente">›</button>
+      <button className="cf-arrow cf-left" onClick={(e) => { e.stopPropagation(); go(-1); }} aria-label="Anterior">‹</button>
+      <button className="cf-arrow cf-right" onClick={(e) => { e.stopPropagation(); go(1); }} aria-label="Siguiente">›</button>
     </div>
   );
 }
