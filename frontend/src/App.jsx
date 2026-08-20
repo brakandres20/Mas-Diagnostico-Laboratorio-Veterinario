@@ -5,6 +5,7 @@ import ValueProps from './components/ValueProps';
 import Portfolio from './components/Portfolio';
 import Technology from './components/Technology';
 import EquipmentCarousel from './components/EquipmentCarousel';
+import ExamCatalog from './components/ExamCatalog';
 import HomeService from './components/HomeService';
 import Benefits from './components/Benefits';
 import QuickQuote from './components/QuickQuote';
@@ -26,6 +27,7 @@ export default function App() {
         <Hero />
         <ValueProps />
         <Portfolio />
+        <ExamCatalog />
         <Technology />
         <div className="py-20">
           <div className="max-w-[1180px] mx-auto px-6">

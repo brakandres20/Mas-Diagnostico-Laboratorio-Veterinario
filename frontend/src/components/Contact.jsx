@@ -19,8 +19,17 @@ export default function Contact() {
           </Reveal>
 
           <Reveal delay={80}>
-            <div className="mt-8 space-y-4">
-              <a href={SITE.mapsUrl} target="_blank" rel="noopener noreferrer" className="block">
+              <div className="mt-8 space-y-4">
+               <div className="p-5 rounded-xl bg-white border border-[#E7ECF1] flex items-start gap-4">
+                 <span className="text-teal-dim text-xl mt-0.5">👤</span>
+                 <div>
+                   <h4 className="text-[13px] font-bold text-ink-muted uppercase tracking-wide mb-1">
+                     {SITE.comercialRole}
+                   </h4>
+                   <p className="text-navy font-medium text-[15px]">{SITE.comercial}</p>
+                 </div>
+               </div>
+               <a href={SITE.mapsUrl} target="_blank" rel="noopener noreferrer" className="block">
                 <div className="p-5 rounded-xl bg-white border border-[#E7ECF1] hover:border-teal transition flex items-start gap-4">
                   <span className="text-teal-dim text-xl mt-0.5">◎</span>
                   <div>

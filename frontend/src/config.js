@@ -13,6 +13,8 @@ export const SITE = {
   mapsUrl:
     'https://www.google.com/maps/search/?api=1&query=Circular+1+%2373-104+Laureles+Medell%C3%ADn',
   coverage: 'Medellín y área metropolitana',
+  comercial: 'Víctor Manuel Agudelo Vásquez',
+  comercialRole: 'Asesor comercial',
 };
 
 export const WHATSAPP_NUMBER = '573146203073';

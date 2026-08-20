@@ -5,6 +5,7 @@ const LINKS = [
   { href: '#inicio', label: 'Inicio' },
   { href: '#nosotros', label: 'Nosotros' },
   { href: '#servicios', label: 'Servicios' },
+  { href: '#examenes', label: 'Exámenes' },
   { href: '#tecnologia', label: 'Tecnología' },
   { href: '#beneficios', label: 'Beneficios' },
   { href: '#convenios', label: 'Convenios' },
