@@ -139,12 +139,12 @@ export const PORTFOLIO = [
         "price": "19.000"
       },
       {
-        "name": "CITOLOGIA OTICA AMBOS OIDOS (levaduras, bacterias, reacción leucocitaria,",
+        "name": "ectoparásitos) CITOLOGIA OTICA AMBOS OIDOS (levaduras, bacterias, reacción leucocitaria,",
         "sample": "Placa con secreción ótica",
         "price": "26.500"
       },
       {
-        "name": "CITOLOGIA TUMORAL Hasta 3 placas",
+        "name": "ectoparásitos) CITOLOGIA TUMORAL Hasta 3 placas",
         "sample": "",
         "price": "68.000"
       },
@@ -224,17 +224,17 @@ export const PORTFOLIO = [
         "price": "30.000"
       },
       {
-        "name": "SERIADO MCMASTER DE ALTA SENSIBILIDAD 3 muestras de materia Fecal ( 1 sola",
+        "name": "OCULTA, COLORAC SERIADO MCMASTER DE ALTA SENSIBILIDAD 3 muestras de materia Fecal ( 1 sola",
         "sample": "COPROLÓGICO",
         "price": "40.000"
       },
       {
-        "name": "+ DIRECTO + FLOTACION + SEDIMENTACION + TECNICA DE Materia fecal",
+        "name": "recolección ) + DIRECTO + FLOTACION + SEDIMENTACION + TECNICA DE Materia fecal",
         "sample": "COPROLÓGICO",
         "price": "16.000"
       },
       {
-        "name": "+ PARÁSITOS PULMONARES (Directo y Baermann) Materia fec al sin refrigerar",
+        "name": "MCMASTER DE ALTA SENSIBILIDAD + PARÁSITOS PULMONARES (Directo y Baermann) Materia fec al sin refrigerar",
         "sample": "COPROLOGICO",
         "price": "20.000"
       },
@@ -374,8 +374,8 @@ export const PORTFOLIO = [
         "price": "12.000"
       },
       {
-        "name": "HEMATOCRITO",
-        "sample": "Tubo tapa lila",
+        "name": "lo contrario HEMATOCRITO Tubo tapa lila",
+        "sample": "tubo gris",
         "price": "10.000"
       },
       {
@@ -389,12 +389,12 @@ export const PORTFOLIO = [
         "price": "18.000"
       },
       {
-        "name": "Hemograma de aves, peces y reptiles, extendido de periférica y proteínas Aves tubo lila, reptiles tubo tapa verde",
+        "name": "RETICULOCITOS (Automatiza Hemograma de aves, peces y reptiles, extendido de periférica y proteínas Aves tubo lila, reptiles tubo tapa verde",
         "sample": "sangre",
         "price": "30.000"
       },
       {
-        "name": "HEMOPARASITOS EN CAPA BLANCA",
+        "name": "plasmáticas HEMOPARASITOS EN CAPA BLANCA",
         "sample": "Tubo tapa lila",
         "price": "20.000"
       },
@@ -409,7 +409,7 @@ export const PORTFOLIO = [
         "price": "17.800"
       },
       {
-        "name": "HIERRO TOTAL",
+        "name": "Microfilmarías HIERRO TOTAL",
         "sample": "Tubo tapa roja",
         "price": "48.300"
       },
@@ -424,7 +424,7 @@ export const PORTFOLIO = [
         "price": "125.000"
       },
       {
-        "name": "HORMONA ADRENOCORTICOTROPICA -ACTH",
+        "name": "10%. HORMONA ADRENOCORTICOTROPICA -ACTH",
         "sample": "Tubo tapa lila",
         "price": "92.100"
       },
@@ -574,7 +574,7 @@ export const PORTFOLIO = [
         "price": "22.000"
       },
       {
-        "name": "RECUENTO DE RETICULOCITOS EN %",
+        "name": "GRAM (bacteria RECUENTO DE RETICULOCITOS EN %",
         "sample": "tubo tapa lila",
         "price": "9.000"
       },
@@ -719,12 +719,12 @@ export const PORTFOLIO = [
     "category": "Microbiología",
     "exams": [
       {
-        "name": "CULTIVO BACTERIOLÓGICO DIFERENTES MUESTRAS + GRAM + ANTIBIOGRAMA",
+        "name": "EXAMEN TIPO DE MUESTRA TARIFA ANTES DE IVA CULTIVO BACTERIOLÓGICO DIFERENTES MUESTRAS + GRAM + ANTIBIOGRAMA",
         "sample": "Medio de transporte + placa",
         "price": "85.000"
       },
       {
-        "name": "Cultivo de oídos + Gram + antibiograma + hongos 1 OIDO (MIC)",
+        "name": "(MIC) Cultivo de oídos + Gram + antibiograma + hongos 1 OIDO (MIC)",
         "sample": "Medio de transporte + placa",
         "price": "125.000"
       },
@@ -759,13 +759,13 @@ export const PORTFOLIO = [
     "category": "Inmunología",
     "exams": [
       {
-        "name": "Distemper canino/Moquillo por CDV Ag tuno tapa roja + + secreción nasal",
+        "name": "EXAMEN TIPO DE MUESTRA TARIFA ANTES DE IVA Distemper canino/Moquillo por CDV Ag tuno tapa roja + + secreción nasal",
         "sample": "secreción ocular",
         "price": "49.000"
       },
       {
-        "name": "Parvovirus canino CPV Ag o hisopado rectal",
-        "sample": "Materia fecal",
+        "name": "Parvovirus canino CPV Ag Materia fecal o hisopado rectal",
+        "sample": "orina",
         "price": "49.000"
       },
       {
@@ -794,7 +794,7 @@ export const PORTFOLIO = [
     "category": "Coagulación",
     "exams": [
       {
-        "name": "TIEMPO DE PROTROMBINA (TP)",
+        "name": "EXAMEN TIPO DE MUESTRA TARIFA ANTES DE IVA TIEMPO DE PROTROMBINA (TP)",
         "sample": "Tubo tapa azul",
         "price": "13.500"
       },
@@ -829,12 +829,12 @@ export const PORTFOLIO = [
         "price": "42.000"
       },
       {
-        "name": "PERFIL BASICO 4 (HEMOGRAMA +ALT+CREATININA+ URE/BUN+FOSFATASA + rojo",
+        "name": "/GRAM) PERFIL BASICO 4 (HEMOGRAMA +ALT+CREATININA+ URE/BUN+FOSFATASA + rojo",
         "sample": "Tubo tapa lila",
         "price": "48.000"
       },
       {
-        "name": "PERFIL BASICO 5 (HEMOGRAMA + ALT+ CREATININA+ ) tubo tapa lila + Coprológico",
+        "name": "ALCALINA) PERFIL BASICO 5 (HEMOGRAMA + ALT+ CREATININA+ ) tubo tapa lila + Coprológico",
         "sample": "COPROLOGICO",
         "price": "40.000"
       },
@@ -844,7 +844,7 @@ export const PORTFOLIO = [
         "price": "22.000"
       },
       {
-        "name": "PERFIL BASICA 7 (HEMOGRAMA + CITOQUIMICO DE /GRAM) tubo tapa lila + orina",
+        "name": "fecal PERFIL BASICA 7 (HEMOGRAMA + CITOQUIMICO DE /GRAM) tubo tapa lila + orina",
         "sample": "ORINA",
         "price": "30.000"
       },
@@ -874,13 +874,28 @@ export const PORTFOLIO = [
         "price": "32.000"
       },
       {
-        "name": "/GRAM + ELECTROLITOS BASICOS +UPC) Tubo tapa lila + rojo + orina",
+        "name": "PERFIL RENAL 2 (HEMOGRAMA + CREATININA + UREA+BUN + CITOQUIMICO DE + rojo + orina ORINA",
+        "sample": "Tubo tapa lila",
+        "price": "42.000"
+      },
+      {
+        "name": "/GRAM) PERFIL RENAL 3 (HEMOGRAMA + CREATININA + UREA+BUN + CITOQUIMICO DE /GRAM + ELECTROLITOS BASICOS +UPC) Tubo tapa lila + rojo + orina",
         "sample": "ORINA",
         "price": "125.000"
       },
       {
-        "name": "PERFIL RENAL 6 (HEMOGRAMA + CREATININA+ UREA + SDMA) + rojo",
+        "name": "PERFIL RENAL 4 (HEMOGRAMA + CREATININA + UREA+BUN + CITOQUIMICO DE + rojo + orina ORINA",
         "sample": "Tubo tapa lila",
+        "price": "63.000"
+      },
+      {
+        "name": "/GRAM+ FOSFORO + CALCIO) PERFIL RENAL 5 (HEMOGRAMA + CREATININA + UREA+BUN + CITOQUIMICO DE + rojo + orina ORINA",
+        "sample": "Tubo tapa lila",
+        "price": "170.000"
+      },
+      {
+        "name": "/GRAM + FOSFORO + CALCIO + UPC+ELECTROLITOS SUERO + ELECTROLITOS ) PERFIL RENAL 6 (HEMOGRAMA + CREATININA+ UREA + SDMA) Tubo tapa lila + rojo",
+        "sample": "ORINA",
         "price": "255.000"
       },
       {
@@ -889,7 +904,7 @@ export const PORTFOLIO = [
         "price": "278.000"
       },
       {
-        "name": "PERFIL RENAL 8 (HEMOGRAMA + CREATININA + UREA+BUN + FOSFORO)",
+        "name": "UPC) PERFIL RENAL 8 (HEMOGRAMA + CREATININA + UREA+BUN + FOSFORO)",
         "sample": "",
         "price": "40.000"
       }
@@ -904,12 +919,12 @@ export const PORTFOLIO = [
         "price": "42.000"
       },
       {
-        "name": "DIRECTA",
-        "sample": "",
+        "name": "PERFIL HEMATICO 2 (ALBUMINA+COLESTEROL+GLUCOSA, BILIRRUBINA TOTAS Y DIRECTA",
+        "sample": "Tubo tapa roja",
         "price": "72.300"
       },
       {
-        "name": "DIFERENCIADAS)",
+        "name": "URE/BUN+ FOSFATASA ALCALINA) PERFIL HEPATICO 3 (ALT+GGT+ BILIRRUBINA TOTAL Y DIRECTA +PROTEINAS DIFERENCIADAS)",
         "sample": "Tubo tapa roja",
         "price": "62.000"
       },
@@ -919,8 +934,8 @@ export const PORTFOLIO = [
         "price": "67.000"
       },
       {
-        "name": "DIRECTA+UREA+ FOSFATASA ALCALINA+ AST+ALT+GGT+ ACIDO BILIAR 1",
-        "sample": "",
+        "name": "DIRECTA) PERFIL HEPATICO 5 (ALBUMINA+COLESTEROL+GLUCOSA+ BILIRRUBINA TOTAL Y + azul DIRECTA+UREA+ FOSFATASA ALCALINA+ AST+ALT+GGT+ ACIDO BILIAR 1",
+        "sample": "Tubo tapa rojo",
         "price": "175.000"
       }
     ]
@@ -929,12 +944,12 @@ export const PORTFOLIO = [
     "category": "Perfil tiroideo",
     "exams": [
       {
-        "name": "COLESTEROL +TRIGLICERIDOS) 3 ml",
+        "name": "PERFIL TIROIDEO 1 (TSH ESPECIFICA CANINA + T4 LIBRE + T4 TOTAL ESPECIFICA + COLESTEROL +TRIGLICERIDOS) 3 ml",
         "sample": "Tubo tapa roja",
         "price": "177.000"
       },
       {
-        "name": "TRIGLICERIDOS) 3 ml",
+        "name": "PERFIL TIROIDEO 2 (T4 LIBRE + T4 TOTAL ESPECIFICA + COLESTEROL + TRIGLICERIDOS) 3 ml",
         "sample": "Tubo tapa roja",
         "price": "115.000"
       },
@@ -989,7 +1004,12 @@ export const PORTFOLIO = [
         "price": "99.000"
       },
       {
-        "name": "PERFIL DIABETICO 5 (FRUCTOSAMINA + HEMOGLOBINA GLICOSILADA) + lila",
+        "name": "+INSULINA) PERFIL DIABETICO 4 (CITOQUIMICO /GRAM +GLUCOSA + FRUCTOSAMINA +INSULINA + lila + orina",
+        "sample": "Tubo tapa roja",
+        "price": "145.000"
+      },
+      {
+        "name": "HEMOGLOBINA GLICOSILADA) PERFIL DIABETICO 5 (FRUCTOSAMINA + HEMOGLOBINA GLICOSILADA) + lila",
         "sample": "Tubo tapa roja",
         "price": "80.000"
       },
@@ -999,7 +1019,7 @@ export const PORTFOLIO = [
         "price": "93.000"
       },
       {
-        "name": "GLICOSILADA) + lila",
+        "name": "PERFIL DIABETICO 7 (GLUCOSA + INSULINA + FRUCTOSAMINA + HEMOGLOBINA GLICOSILADA) + lila",
         "sample": "Tubo tapa roja",
         "price": "130.000"
       }
@@ -1014,8 +1034,8 @@ export const PORTFOLIO = [
         "price": "20.000"
       },
       {
-        "name": "COLESTEROL VLDL + TRIGLICERIDOS + GLUCOSA)",
-        "sample": "",
+        "name": "PERFIL LIPIDICO 2 (COLESTEROL TOTAL+ COLESTEROL LDL + COLESTEROL HDL COLESTEROL VLDL + TRIGLICERIDOS + GLUCOSA)",
+        "sample": "Tubo tapa roja",
         "price": "59.00"
       }
     ]
@@ -1024,23 +1044,23 @@ export const PORTFOLIO = [
     "category": "Perfil pancreático",
     "exams": [
       {
-        "name": "PERFIL PANCREATICO 1 (AMILASA PANCREÁTICA + LIPASA PANCREÁTICA GENERICA)",
+        "name": "DE IVA PERFIL PANCREATICO 1 (AMILASA PANCREÁTICA + LIPASA PANCREÁTICA GENERICA)",
         "sample": "Tubo tapa roja",
         "price": "80.000"
       },
       {
-        "name": "ESPECIFICA)",
+        "name": "PERFIL PANCREATICO 2 (GLUCOSA+ AMILASA PANCREÁTICA + LIPASA PANCREATICA ESPECIFICA)",
         "sample": "Tubo tapa roja",
         "price": "138.000"
       },
       {
-        "name": "ESPECIFICA + COPROGRAMA) + materia fecal",
+        "name": "PERFIL PANCREATICO 3 (GLUCOSA+ AMILASA PANCREATICA + LIPASA PANCREATICA ESPECIFICA + COPROGRAMA) + materia fecal",
         "sample": "Tubo tapa roja",
         "price": "160.000"
       },
       {
-        "name": "ESPECIFICA + BILIRRUBINA TOTAL Y DIRECTA + CALCIO + COLESTERO)",
-        "sample": "",
+        "name": "PERFIL PANCREATICO 4 (GLUCOSA+ AMILASA PANCREATICA + LIPASA PANCREATICA ESPECIFICA + BILIRRUBINA TOTAL Y DIRECTA + CALCIO + COLESTERO)",
+        "sample": "Tubo tapa roja",
         "price": "179.000"
       }
     ]
@@ -1069,7 +1089,7 @@ export const PORTFOLIO = [
         "price": "120.000"
       },
       {
-        "name": "PERFIL EXOTICO (HEMOGRAMA + CREATININA + UREA/BUN + AST) + lila",
+        "name": "ALCALINA+BILIRRUBINA TOTAL Y DIRECTA +UREA/BUN+ PROTEINAS DIFERENCIADAS +COLESTEROL +GLUCOSA) PERFIL EXOTICO (HEMOGRAMA + CREATININA + UREA/BUN + AST) + lila",
         "sample": "Tubo tapa roja",
         "price": "38.000"
       }
@@ -1077,4 +1097,4 @@ export const PORTFOLIO = [
   }
 ];
 
-export const PORTFOLIO_TOTAL = 202;
+export const PORTFOLIO_TOTAL = 206;
