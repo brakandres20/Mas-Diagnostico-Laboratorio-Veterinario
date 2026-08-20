@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { createQuote } from '../api/client';
 import { INSTITUTION_TYPES, SERVICE_OPTIONS } from '../data/services';
+import { PORTFOLIO } from '../data/portfolio';
 import Reveal from './Reveal';
+
+// Lista plana de exámenes (sin precios) para la búsqueda del formulario.
+const ALL_EXAMS = PORTFOLIO.flatMap((cat) =>
+  cat.exams.map((e) => ({ name: e.name, category: cat.category }))
+);
 
 const emptyForm = {
   nombreCompleto: '',
@@ -54,6 +60,20 @@ export default function QuoteForm() {
   const [waUrl, setWaUrl] = useState('');
   const [waEnviado, setWaEnviado] = useState(false);
 
+  // Selección de exámenes (opcional): búsqueda + multi-selección.
+  const [examenes, setExamenes] = useState([]); // [{ name, category }]
+  const [examQuery, setExamQuery] = useState('');
+
+  const examResults = useMemo(() => {
+    const q = examQuery.trim().toLowerCase();
+    if (!q) return [];
+    return ALL_EXAMS.filter((e) => e.name.toLowerCase().includes(q)).slice(0, 8);
+  }, [examQuery]);
+
+  const isSelected = (r) => examenes.some((s) => s.name === r.name && s.category === r.category);
+  const toggleExam = (r) =>
+    setExamenes((prev) => (isSelected(r) ? prev.filter((s) => !(s.name === r.name && s.category === r.category)) : [...prev, r]));
+
   const setField = (key, value) => {
     setForm((f) => ({ ...f, [key]: value }));
     if (touched[key]) {
@@ -87,10 +107,11 @@ export default function QuoteForm() {
       return;
     }
 
-    setStatus('sending');
+     setStatus('sending');
     setErrorMsg('');
     try {
-      const data = await createQuote(form);
+      const payload = { ...form, examenes: examenes.map((e) => e.name) };
+      const data = await createQuote(payload);
       setWaEnviado(Boolean(data?.waEnviado));
       if (data?.waLink) {
         setWaUrl(data.waLink);
@@ -138,7 +159,8 @@ export default function QuoteForm() {
         <div className="bg-navy px-8 py-6">
           <h3 className="text-white text-xl font-extrabold">Solicita tu cotización</h3>
           <p className="text-gray-mid text-sm mt-1">
-            Diligencia el formulario y envíalo por WhatsApp en un solo paso.
+            Busca y selecciona los exámenes que necesitas (opcional). Si aún no los tienes
+            listados, un asesor del laboratorio te ayudará a armar la cotización.
           </p>
         </div>
 
@@ -170,6 +192,8 @@ export default function QuoteForm() {
                 setTouched({});
                 setStatus('idle');
                 setWaUrl('');
+                setExamenes([]);
+                setExamQuery('');
               }}
               className="block mx-auto mt-4 text-[13px] text-ink-muted underline hover:text-teal"
             >
@@ -307,6 +331,79 @@ export default function QuoteForm() {
                   );
                 })}
               </div>
+            </div>
+
+            <div className="md:col-span-2">
+              <label htmlFor="campo-examenes" className="block text-[13px] font-semibold mb-1.5 text-navy">
+                Exámenes de interés <span className="font-normal text-ink-muted">(opcional)</span>
+              </label>
+
+              {examenes.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {examenes.map((s) => (
+                    <span
+                      key={`${s.category}|${s.name}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.5px] font-medium bg-navy text-teal border border-navy"
+                    >
+                      {s.name}
+                      <button
+                        type="button"
+                        onClick={() => toggleExam(s)}
+                        aria-label={`Quitar ${s.name}`}
+                        className="text-teal/80 hover:text-white leading-none"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <input
+                id="campo-examenes"
+                type="text"
+                autoComplete="off"
+                value={examQuery}
+                onChange={(e) => setExamQuery(e.target.value)}
+                placeholder="Buscar examen o perfil…"
+                className={inputCls('idle')}
+                aria-describedby="hint-examenes"
+              />
+
+              {examQuery.trim() && (
+                <div className="mt-2 rounded-xl border border-[#E7ECF1] bg-white max-h-60 overflow-auto">
+                  {examResults.length === 0 ? (
+                    <p className="px-4 py-3 text-[13px] text-ink-muted">Sin coincidencias.</p>
+                  ) : (
+                    examResults.map((r) => {
+                      const on = isSelected(r);
+                      return (
+                        <button
+                          type="button"
+                          key={`${r.category}|${r.name}`}
+                          onClick={() => toggleExam(r)}
+                          className={`w-full text-left px-4 py-2.5 flex items-center justify-between gap-3 border-b border-[#F0F3F6] last:border-0 transition ${
+                            on ? 'bg-teal/10' : 'hover:bg-gray-light'
+                          }`}
+                        >
+                          <span className="min-w-0">
+                            <span className="block text-[13.5px] text-navy truncate">{r.name}</span>
+                            <span className="block text-[11px] text-ink-muted">{r.category}</span>
+                          </span>
+                          <span className={`shrink-0 text-[12px] font-semibold ${on ? 'text-teal' : 'text-ink-muted'}`}>
+                            {on ? 'Agregado ✓' : 'Agregar'}
+                          </span>
+                        </button>
+                      );
+                    })
+                  )}
+                </div>
+              )}
+
+              <p id="hint-examenes" className="mt-1.5 text-[12px] text-ink-muted">
+                Selecciona uno o varios exámenes. Si aún no los tienes claros, un asesor del laboratorio te ayudará a
+                armar la cotización.
+              </p>
             </div>
 
             <div className="md:col-span-2">

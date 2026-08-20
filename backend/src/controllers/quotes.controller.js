@@ -33,6 +33,7 @@ function sanitize(body) {
     ciudad: pick('ciudad'),
     tipoInstitucion: pick('tipoInstitucion'),
     serviciosInteres: pickList('serviciosInteres'),
+    examenes: pickList('examenes').slice(0, 50),
     mensaje: pick('mensaje'),
     tipo: TIPOS.includes(body.tipo) ? body.tipo : 'cotizacion',
   };

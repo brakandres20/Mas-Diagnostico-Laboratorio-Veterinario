@@ -17,6 +17,10 @@ function buildQuoteMessage(q) {
   if (q.tipoInstitucion) lines.push(`*Tipo de institución:* ${q.tipoInstitucion}`);
   if (q.serviciosInteres && q.serviciosInteres.length)
     lines.push(`*Servicios de interés:* ${q.serviciosInteres.join(', ')}`);
+  if (q.examenes && q.examenes.length) {
+    lines.push('*Exámenes de interés:*');
+    q.examenes.forEach((x) => lines.push(`• ${x}`));
+  }
   if (q.mensaje) lines.push(`*Mensaje:* ${q.mensaje}`);
   lines.push('------------------------------------');
   return lines.join('\n');
