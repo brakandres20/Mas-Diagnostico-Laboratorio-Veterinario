@@ -59,36 +59,34 @@ WHATSAPP_PHONE_ID=<id_del_número>
 
 ## Despliegue en Vercel
 
-El proyecto está preparado para Vercel en **dos proyectos separados** (backend y frontend).
+El proyecto usa la **configuración de monorepo de Vercel** (`vercel.json` en la raíz): un solo proyecto
+que construye dos servicios y enruta `/api/*` al backend y todo lo demás al frontend.
 
-### Backend (API) → Vercel
+```
+vercel.json        → services: frontend (vite) + backend (node/express)
+                     rewrites: /api(/.*)? → backend · /(.*) → frontend
+```
 
-1. En Vercel, crea un proyecto y apunta a la carpeta `mas-diagnostico/backend`.
-2. **Root Directory**: `backend`.
-3. Vercel detecta automáticamente la función serverless en `backend/api/index.js` (exporta la app de Express). Sin `npm run build`.
-4. En **Settings → Environment Variables** agrega:
+### Desplegar
+
+1. Sube el repositorio a GitHub y en Vercel importa el proyecto (o usa el CLI desde la raíz).
+2. En **Settings → Environment Variables** agrega:
    - `WHATSAPP_NUMBER` → `573146203073`
    - `WHATSAPP_ACCESS_TOKEN` y `WHATSAPP_PHONE_ID` → opcionales (envío automático)
-5. Despliega. Obtendrás una URL tipo `https://mas-diagnostico-api.vercel.app`.
-6. Verifica: `https://TU-API.vercel.app/api/health` debe responder `{"ok":true,...}`.
+3. Despliega. Vercel detecta el framework de `frontend` (Vite) y la función `backend/api/index.js`.
 
-### Frontend (Sitio) → Vercel
+### Importante: hacer público el sitio
 
-1. Crea un segundo proyecto apuntando a la carpeta `mas-diagnostico/frontend`.
-2. **Root Directory**: `frontend` · **Framework Preset**: Vite · **Output Directory**: `dist`.
-3. Para que el formulario llegue al backend, usa una de estas dos opciones (recomendada la primera):
-   - **Opción A (recomendada):** Define en las variables de entorno del frontend:
-     `VITE_API_URL=https://mas-diagnostico-api.vercel.app`
-   - **Opción B:** Edita `frontend/vercel.json` y reemplaza la URL de ejemplo por la tuya
-     (el rewrite reenvía `/api/*` al backend).
-4. Despliega. El sitio quedará en `https://tu-frontend.vercel.app`.
+Por defecto Vercel activa la **protección de despliegue (Vercel Authentication / SSO)**. Para que el
+sitio sea accesible públicamente, ve a **Settings → Deployment Protection** del proyecto y desactiva la
+autenticación (permite acceso público).
 
-Con la **Opción A** el navegador llama directo al backend (CORS abierto en el API). Con la
-**Opción B** no se configura CORS, Vercel hace de proxy. No uses ambas a la vez con URLs distintas.
+Verificación:
 
-### En local con el proxy de Vite
+- `https://TU-SITIO.vercel.app/api/health` → `{"ok":true,...}`
+- `https://TU-SITIO.vercel.app/` → el sitio
 
-Si no defines `VITE_API_URL`, el frontend usa `/api` y el proxy de Vite lo envía a `http://localhost:5000`.
+No se necesita `VITE_API_URL`: el rewrite de `/api` reenvía al backend del mismo despliegue.
 
 ## Despliegue tradicional (opcional)
 
