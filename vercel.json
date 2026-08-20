@@ -11,11 +11,40 @@
     },
     "headers": [
         {
-            "source": "/(favicon-32\\.png|favicon-48\\.png|favicon\\.png|apple-touch-icon\\.png|logo-256\\.png|logo\\.png|icon-192\\.png|icon-512\\.png|images/(.*))",
-            "headers": [
-                { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
-                { "key": "X-Content-Type-Options", "value": "nosniff" }
-            ]
+            "source": "/favicon-32.png",
+            "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        },
+        {
+            "source": "/favicon-48.png",
+            "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        },
+        {
+            "source": "/favicon.png",
+            "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        },
+        {
+            "source": "/apple-touch-icon.png",
+            "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        },
+        {
+            "source": "/logo-256.png",
+            "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        },
+        {
+            "source": "/logo.png",
+            "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        },
+        {
+            "source": "/icon-192.png",
+            "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        },
+        {
+            "source": "/icon-512.png",
+            "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+        },
+        {
+            "source": "/images/:path*",
+            "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
         },
         {
             "source": "/sw.js",
