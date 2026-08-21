@@ -201,7 +201,7 @@ export default function QuoteForm() {
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} noValidate className="p-8 grid md:grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} noValidate className="p-8 grid md:grid-cols-2 gap-4 [&>*]:min-w-0">
             <div className="hidden" aria-hidden="true">
               <input type="text" name="empresa" tabIndex={-1} autoComplete="off" value={form.empresa || ''} onChange={(e) => setField('empresa', e.target.value)} />
             </div>
@@ -333,7 +333,7 @@ export default function QuoteForm() {
               </div>
             </div>
 
-            <div className="md:col-span-2">
+            <div className="md:col-span-2 min-w-0">
               <label htmlFor="campo-examenes" className="block text-[13px] font-semibold mb-1.5 text-navy">
                 Exámenes de interés <span className="font-normal text-ink-muted">(opcional)</span>
               </label>
@@ -343,14 +343,16 @@ export default function QuoteForm() {
                   {examenes.map((s) => (
                     <span
                       key={`${s.category}|${s.name}`}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.5px] font-medium bg-navy text-teal border border-navy"
+                      className="inline-flex items-center gap-1.5 max-w-full px-3 py-1.5 rounded-full text-[12.5px] font-medium bg-navy text-teal border border-navy"
                     >
-                      {s.name}
+                      <span className="truncate min-w-0" title={s.name}>
+                        {s.name}
+                      </span>
                       <button
                         type="button"
                         onClick={() => toggleExam(s)}
                         aria-label={`Quitar ${s.name}`}
-                        className="text-teal/80 hover:text-white leading-none"
+                        className="text-teal/80 hover:text-white leading-none shrink-0"
                       >
                         ×
                       </button>

@@ -5,7 +5,7 @@ import QuoteForm from './QuoteForm';
 export default function Contact() {
   return (
     <section id="contacto" className="py-20 bg-gray-light">
-      <div className="max-w-[1180px] mx-auto px-6 grid lg:grid-cols-[0.9fr_1.1fr] gap-12">
+      <div className="max-w-[1180px] mx-auto px-6 grid lg:grid-cols-[0.9fr_1.1fr] gap-12 [&>*]:min-w-0">
         <div>
           <Reveal>
             <p className="font-mono text-xs uppercase tracking-[0.14em] font-semibold text-teal-dim">Contacto</p>
